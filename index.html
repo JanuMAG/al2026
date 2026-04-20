@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Janu — Island Rank Plan 2026</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --color-text-primary: #1a1a1a;
+    --color-text-secondary: #555;
+    --color-text-tertiary: #888;
+    --color-background-primary: #fff;
+    --color-background-secondary: #f4f4f2;
+    --color-border-tertiary: rgba(0,0,0,0.12);
+    --color-border-secondary: rgba(0,0,0,0.22);
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --bio:#27500A; --bio-bg:#EAF3DE;
+    --chem:#0C447C; --chem-bg:#E6F1FB;
+    --phys:#633806; --phys-bg:#FAEEDA;
+    --pp:#3C3489; --pp-bg:#EEEDFE;
+    --teach:#72243E; --teach-bg:#FBEAF0;
+  }
+  @media(prefers-color-scheme:dark){
+    :root{
+      --color-text-primary:#f0f0ee;
+      --color-text-secondary:#a0a09a;
+      --color-text-tertiary:#666;
+      --color-background-primary:#1e1e1c;
+      --color-background-secondary:#2a2a28;
+      --color-border-tertiary:rgba(255,255,255,0.1);
+      --color-border-secondary:rgba(255,255,255,0.2);
+      --bio:#C0DD97; --bio-bg:#173404;
+      --chem:#B5D4F4; --chem-bg:#042C53;
+      --phys:#FAC775; --phys-bg:#412402;
+      --pp:#CECBF6; --pp-bg:#26215C;
+      --teach:#F4C0D1; --teach-bg:#4B1528;
+    }
+  }
+  body { font-family: var(--font-sans); background: var(--color-background-primary); color: var(--color-text-primary); padding: 24px; max-width: 760px; margin: 0 auto; }
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.2rem;padding:.5rem 0 0}
+  .tab{padding:8px 16px;font-size:12px;border-radius:var(--border-radius-md);border:.5px solid var(--color-border-secondary);background:transparent;color:var(--color-text-secondary);cursor:pointer;transition:all .15s;font-weight:500}
+  .tab.active{background:var(--color-text-primary);color:var(--color-background-primary);border-color:transparent}
+  .sec{display:none}.sec.active{display:block}
+  .day-nav{display:flex;align-items:center;gap:10px;margin-bottom:1rem}
+  .day-dots{display:flex;gap:5px;flex:1;justify-content:center}
+  .day-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;cursor:pointer;border:.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-secondary);transition:all .15s}
+  .day-dot.active{background:var(--color-text-primary);color:var(--color-background-primary);border-color:transparent}
+  .day-dot.teach-dot{background:var(--teach-bg);color:var(--teach);border-color:transparent}
+  .day-dot.teach-dot.active{background:var(--teach);color:#fff}
+  .nav-btn{padding:6px 14px;font-size:12px;border-radius:var(--border-radius-md);border:.5px solid var(--color-border-secondary);background:transparent;color:var(--color-text-secondary);cursor:pointer}
+  .day-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem;flex-wrap:wrap}
+  .day-name{font-size:18px;font-weight:500;color:var(--color-text-primary)}
+  .day-badge{font-size:11px;padding:4px 12px;border-radius:20px;font-weight:500}
+  .subj-pills{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:1rem}
+  .spill{font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px}
+  .timeline{display:flex;flex-direction:column;gap:4px}
+  .trow{display:flex;gap:10px;align-items:flex-start}
+  .ttime{font-size:11px;color:var(--color-text-tertiary);min-width:60px;padding-top:8px;font-variant-numeric:tabular-nums;flex-shrink:0}
+  .tblock{flex:1;border-radius:8px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .tinfo .tlabel{font-size:13px;font-weight:500;color:var(--color-text-primary)}
+  .tinfo .tsub{font-size:11px;color:var(--color-text-secondary);margin-top:1px}
+  .ttag{font-size:10px;padding:2px 8px;border-radius:20px;white-space:nowrap;font-weight:500;flex-shrink:0}
+  .b-bio{background:var(--bio-bg)}.b-chem{background:var(--chem-bg)}.b-phys{background:var(--phys-bg)}
+  .b-pp{background:var(--pp-bg)}.b-teach{background:var(--teach-bg)}.b-rest{background:var(--color-background-secondary)}.b-anki{background:var(--chem-bg)}.b-review{background:#FAECE7}.b-sleep{background:#E1F5EE}.b-ex{background:#FAECE7}
+  @media(prefers-color-scheme:dark){.b-review{background:#4A1B0C}.b-sleep{background:#04342C}.b-ex{background:#4A1B0C}}
+  .g-bio{background:var(--bio-bg);color:var(--bio)}.g-chem{background:var(--chem-bg);color:var(--chem)}.g-phys{background:var(--phys-bg);color:var(--phys)}.g-pp{background:var(--pp-bg);color:var(--pp)}.g-teach{background:var(--teach-bg);color:var(--teach)}.g-rest{background:var(--color-background-secondary);color:var(--color-text-tertiary)}.g-anki{background:var(--chem-bg);color:var(--chem)}.g-review{background:#F5C4B3;color:#712B13}.g-sleep{background:#9FE1CB;color:#085041}.g-ex{background:#F5C4B3;color:#712B13}
+  @media(prefers-color-scheme:dark){.g-review{background:#993C1D;color:#F5C4B3}.g-sleep{background:#0F6E56;color:#9FE1CB}.g-ex{background:#993C1D;color:#F5C4B3}}
+  .arena-top{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem}
+  @media(max-width:480px){.arena-top{grid-template-columns:1fr}}
+  .rank-card{background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:16px;text-align:center}
+  .rank-icon{font-size:36px;margin-bottom:6px}
+  .rank-name{font-size:16px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px}
+  .rank-sub{font-size:11px;color:var(--color-text-tertiary)}
+  .xp-section{background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:16px;display:flex;flex-direction:column;justify-content:center}
+  .xp-nums{display:flex;justify-content:space-between;font-size:11px;color:var(--color-text-tertiary);margin-bottom:6px}
+  .xp-big{font-size:24px;font-weight:500;color:var(--color-text-primary);margin-bottom:8px}
+  .bar-bg{height:10px;background:var(--color-background-primary);border-radius:20px;overflow:hidden;border:.5px solid var(--color-border-tertiary)}
+  .bar-fill{height:100%;border-radius:20px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+  .bar-fill-green{background:#1D9E75}.bar-fill-bio{background:#639922}.bar-fill-chem{background:#378ADD}.bar-fill-phys{background:#BA7517}
+  .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1rem}
+  @media(max-width:480px){.stats-row{grid-template-columns:repeat(2,1fr)}}
+  .stat{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px;text-align:center}
+  .stat-n{font-size:22px;font-weight:500;color:var(--color-text-primary)}
+  .stat-l{font-size:10px;color:var(--color-text-tertiary);margin-top:2px}
+  .subj-bars{display:flex;flex-direction:column;gap:8px;margin-bottom:1rem}
+  .sbar-row{display:flex;align-items:center;gap:10px}
+  .sbar-lbl{font-size:12px;font-weight:500;min-width:70px;color:var(--color-text-secondary)}
+  .sbar-wrap{flex:1;height:8px;background:var(--color-background-secondary);border-radius:20px;overflow:hidden}
+  .sbar-pct{font-size:11px;color:var(--color-text-tertiary);min-width:32px;text-align:right}
+  .log-form{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:1rem;padding:14px;background:var(--color-background-secondary);border-radius:var(--border-radius-lg)}
+  .log-form select,.log-form input{font-size:12px;padding:7px 10px;border-radius:var(--border-radius-md);border:.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-primary)}
+  .log-btn{padding:8px 16px;border-radius:var(--border-radius-md);border:none;background:var(--color-text-primary);color:var(--color-background-primary);font-size:12px;font-weight:500;cursor:pointer}
+  .paper-list{display:flex;flex-direction:column;gap:4px}
+  .paper-row{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:var(--border-radius-md);background:var(--color-background-secondary)}
+  .pr-subj{font-size:11px;font-weight:500;min-width:62px}
+  .pr-info{flex:1;font-size:11px;color:var(--color-text-secondary)}
+  .pr-xp{font-size:10px;color:var(--color-text-tertiary);min-width:36px;text-align:right}
+  .pr-rank{font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px}
+  .rs{background:#EAF3DE;color:#27500A}.ra{background:#E6F1FB;color:#0C447C}.rb{background:#FAEEDA;color:#633806}.rc{background:#FCEBEB;color:#791F1F}
+  @media(prefers-color-scheme:dark){.rs{background:#173404;color:#C0DD97}.ra{background:#042C53;color:#B5D4F4}.rb{background:#412402;color:#FAC775}.rc{background:#501313;color:#F7C1C1}}
+  .badges-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-bottom:1.2rem}
+  .badge-card{border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:12px 8px;text-align:center;background:var(--color-background-secondary);opacity:.3;transition:all .3s;filter:grayscale(1)}
+  .badge-card.earned{opacity:1;filter:none;border-color:#1D9E75}
+  .badge-ico{font-size:26px;margin-bottom:5px}
+  .badge-nm{font-size:11px;font-weight:500;color:var(--color-text-primary)}
+  .badge-cn{font-size:10px;color:var(--color-text-tertiary);margin-top:2px;line-height:1.3}
+  .streak-grid{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:.75rem}
+  .sd{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;cursor:pointer;border:.5px solid var(--color-border-tertiary);background:var(--color-background-secondary);color:var(--color-text-tertiary);transition:all .2s;user-select:none}
+  .sd.on{background:#1D9E75;color:#fff;border-color:#0F6E56}
+  .sd.today-ring{box-shadow:0 0 0 2px var(--color-text-primary)}
+  .sd.miss{background:#FCEBEB;border-color:#F09595}
+  @media(prefers-color-scheme:dark){.sd.miss{background:#501313;border-color:#791F1F}}
+  .h2{font-size:13px;font-weight:500;color:var(--color-text-primary);margin:1.2rem 0 .6rem;padding-bottom:6px;border-bottom:.5px solid var(--color-border-tertiary)}
+  .h2:first-child{margin-top:0}
+  .alert{background:var(--color-background-secondary);border-left:3px solid #1D9E75;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:10px 14px;font-size:12px;color:var(--color-text-secondary);line-height:1.6;margin-bottom:1rem}
+  .law{display:flex;gap:12px;padding:12px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);margin-bottom:8px}
+  .law-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0}
+  .law-t{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:3px}
+  .law-b{font-size:11px;color:var(--color-text-secondary);line-height:1.5}
+  .multiplier-box{background:var(--pp-bg);border-radius:var(--border-radius-lg);padding:14px;margin-bottom:1rem}
+  .mult-title{font-size:12px;font-weight:500;color:var(--pp);margin-bottom:8px}
+  .mult-rows{display:flex;flex-direction:column;gap:5px}
+  .mult-row{display:flex;justify-content:space-between;font-size:12px}
+  .mult-l{color:var(--color-text-secondary)}
+  .mult-r{font-weight:500;color:var(--color-text-primary)}
+  .rank-ladder{display:flex;flex-direction:column;gap:4px}
+  .rung{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:var(--border-radius-md);border:.5px solid var(--color-border-tertiary)}
+  .rung.current{border-color:#1D9E75;background:var(--color-background-secondary)}
+  .rung-ico{font-size:16px;min-width:24px;text-align:center}
+  .rung-name{font-size:12px;font-weight:500;color:var(--color-text-primary);flex:1}
+  .rung-xp{font-size:11px;color:var(--color-text-tertiary)}
+  .rung-cur{font-size:10px;padding:2px 8px;border-radius:20px;background:#EAF3DE;color:#27500A}
+  @media(prefers-color-scheme:dark){.rung-cur{background:#173404;color:#C0DD97}}
+</style>
+</head>
+<body>
+
+<div class="tabs">
+  <button class="tab active" onclick="sw(event,'day')">Day plan</button>
+  <button class="tab" onclick="sw(event,'arena')">Paper arena</button>
+  <button class="tab" onclick="sw(event,'streak')">Streak + badges</button>
+  <button class="tab" onclick="sw(event,'laws')">Island rank laws</button>
+</div>
+
+<div class="sec active" id="tab-day">
+  <div class="day-nav">
+    <button class="nav-btn" onclick="prevDay()">←</button>
+    <div class="day-dots" id="day-dots"></div>
+    <button class="nav-btn" onclick="nextDay()">→</button>
+  </div>
+  <div id="day-content"></div>
+</div>
+
+<div class="sec" id="tab-arena">
+  <div class="arena-top">
+    <div class="rank-card">
+      <div class="rank-icon" id="rank-icon">🥚</div>
+      <div class="rank-name" id="rank-name">Rookie</div>
+      <div class="rank-sub" id="rank-next">0 / 100 XP to next</div>
+    </div>
+    <div class="xp-section">
+      <div class="xp-big" id="xp-big">0 XP</div>
+      <div class="xp-nums"><span>Progress</span><span id="xp-pct-txt">0%</span></div>
+      <div class="bar-bg"><div class="bar-fill bar-fill-green" id="xp-bar" style="width:0%"></div></div>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-n" id="s-papers">0</div><div class="stat-l">papers done</div></div>
+    <div class="stat"><div class="stat-n" id="s-avg">—</div><div class="stat-l">avg score</div></div>
+    <div class="stat"><div class="stat-n" id="s-best">—</div><div class="stat-l">personal best</div></div>
+    <div class="stat"><div class="stat-n" id="s-streak">0</div><div class="stat-l">day streak</div></div>
+  </div>
+  <div class="h2">Subject performance</div>
+  <div class="subj-bars">
+    <div class="sbar-row"><div class="sbar-lbl">Biology</div><div class="sbar-wrap"><div class="bar-fill bar-fill-bio" style="width:0%" id="bar-bio"></div></div><div class="sbar-pct" id="pct-bio">—</div></div>
+    <div class="sbar-row"><div class="sbar-lbl">Chemistry</div><div class="sbar-wrap"><div class="bar-fill bar-fill-chem" style="width:0%" id="bar-chem"></div></div><div class="sbar-pct" id="pct-chem">—</div></div>
+    <div class="sbar-row"><div class="sbar-lbl">Physics</div><div class="sbar-wrap"><div class="bar-fill bar-fill-phys" style="width:0%" id="bar-phys"></div></div><div class="sbar-pct" id="pct-phys">—</div></div>
+  </div>
+  <div class="h2">Log a paper</div>
+  <div class="log-form">
+    <select id="f-subj"><option>Biology</option><option>Chemistry</option><option>Physics</option></select>
+    <select id="f-year" style="width:82px"></select>
+    <select id="f-type"><option value="15">Tute paper</option><option value="20">Lesson-wise</option><option value="30">Full paper</option></select>
+    <input id="f-score" type="number" min="0" max="100" placeholder="Score %">
+    <button class="log-btn" onclick="logIt()">+ Log</button>
+  </div>
+  <div class="h2">History</div>
+  <div class="paper-list" id="paper-list"><div style="font-size:12px;color:var(--color-text-tertiary);padding:6px 0">No papers yet. Get to work.</div></div>
+</div>
+
+<div class="sec" id="tab-streak">
+  <div class="h2" style="margin-top:0">30-day streak</div>
+  <div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:.6rem">Tap any day to mark done. Green = done. Red = missed. Don't break the chain.</div>
+  <div class="streak-grid" id="streak-grid"></div>
+  <div style="display:flex;gap:8px;margin-bottom:1.5rem">
+    <button class="nav-btn" onclick="markToday()" style="font-size:12px;padding:7px 14px">Mark today done</button>
+    <button class="nav-btn" onclick="clrStreak()" style="font-size:12px;padding:7px 14px">Reset</button>
+  </div>
+  <div class="h2">Achievements</div>
+  <div class="badges-grid" id="badges-grid"></div>
+</div>
+
+<div class="sec" id="tab-laws">
+  <div class="h2" style="margin-top:0">XP + rank system</div>
+  <div class="multiplier-box">
+    <div class="mult-title">How XP is calculated per paper</div>
+    <div class="mult-rows">
+      <div class="mult-row"><div class="mult-l">Tute paper base</div><div class="mult-r">15 XP</div></div>
+      <div class="mult-row"><div class="mult-l">Lesson-wise base</div><div class="mult-r">20 XP</div></div>
+      <div class="mult-row"><div class="mult-l">Full past paper base</div><div class="mult-r">30 XP</div></div>
+      <div class="mult-row"><div class="mult-l">Score 70–79% bonus</div><div class="mult-r">+ 5 XP</div></div>
+      <div class="mult-row"><div class="mult-l">Score 80–89% bonus</div><div class="mult-r">+ 15 XP</div></div>
+      <div class="mult-row"><div class="mult-l">Score 90%+ bonus</div><div class="mult-r">+ 30 XP</div></div>
+      <div class="mult-row"><div class="mult-l">Score 100% (perfect)</div><div class="mult-r">+ 50 XP</div></div>
+    </div>
+  </div>
+  <div class="h2">Rank ladder</div>
+  <div class="rank-ladder" id="rank-ladder"></div>
+  <div class="h2" style="margin-top:1.2rem">The 5 island rank laws</div>
+  <div class="law"><div class="law-num" style="background:#EAF3DE;color:#27500A">1</div><div><div class="law-t">Past papers are the exam, not practice for it</div><div class="law-b">Top rankers master every mark scheme. After each paper, spend equal time on the marking guide. Know the exact phrasing that scores.</div></div></div>
+  <div class="law"><div class="law-num" style="background:#E6F1FB;color:#0C447C">2</div><div><div class="law-t">Error log = your personal syllabus</div><div class="law-b">Every wrong answer goes into Notion: topic, why you got it wrong, correct concept. Review it every Sunday. Your exam will target your weak spots.</div></div></div>
+  <div class="law"><div class="law-num" style="background:#FAEEDA;color:#633806">3</div><div><div class="law-t">Teaching younger students is a cheat code</div><div class="law-b">The Protégé Effect: preparing to teach forces deeper encoding than studying alone. Mon and Wed teach sessions are secretly double study sessions.</div></div></div>
+  <div class="law"><div class="law-num" style="background:#EEEDFE;color:#3C3489">4</div><div><div class="law-t">Consistency destroys intensity</div><div class="law-b">One 18-hour day then burnout is worse than 9 hours every single day. Your streak is more important than your daily hours. Never break the chain.</div></div></div>
+  <div class="law"><div class="law-num" style="background:#FAECE7;color:#712B13">5</div><div><div class="law-t">Final 2 weeks: zero new content</div><div class="law-b">Only revision, error log review, and Anki. Sleep 8.5 hrs non-negotiably. Most candidates ruin themselves cramming new material right before the exam.</div></div></div>
+</div>
+
+<script>
+const DAYS=[
+{id:0,name:"Monday",type:"teach",typeLabel:"Teaching day",typeClass:"g-teach",
+subjs:["Biology","Chemistry","Physics"],
+slots:[
+{t:"7:30",l:"Wake + morning reset",s:"Water · sunlight · no phone 20 min",b:"b-rest",g:"g-rest",tag:"routine"},
+{t:"7:50",l:"Breakfast + Anki",s:"Run spaced rep cards — review only",b:"b-anki",g:"g-anki",tag:"anki"},
+{t:"8:20",l:"Block 1 — Biology",s:"Hardest chapter this week · peak cortisol",b:"b-bio",g:"g-bio",tag:"90 min"},
+{t:"9:50",l:"Active break",s:"Walk outside · no phone",b:"b-rest",g:"g-rest",tag:"20 min"},
+{t:"10:10",l:"Block 2 — Chemistry",s:"Theory · definitions · organic mechanisms",b:"b-chem",g:"g-chem",tag:"90 min"},
+{t:"11:40",l:"Break + snack",s:"Stretch · brain reset",b:"b-rest",g:"g-rest",tag:"20 min"},
+{t:"12:00",l:"Lunch + rest",s:"No heavy carbs · keep energy stable",b:"b-rest",g:"g-rest",tag:"60 min"},
+{t:"1:00",l:"Block 3 — Physics",s:"Derivations · formula sheet review",b:"b-phys",g:"g-phys",tag:"90 min"},
+{t:"2:00",l:"TEACH — younger students",s:"Use your A/L topics where possible",b:"b-teach",g:"g-teach",tag:"5 hrs"},
+{t:"7:00",l:"Dinner + decompress",s:"Don't study immediately after teaching",b:"b-rest",g:"g-rest",tag:"30 min"},
+{t:"7:30",l:"Night review — Bio + Chem",s:"Rewrite key points · add Anki cards",b:"b-review",g:"g-review",tag:"60 min"},
+{t:"8:30",l:"Plan tomorrow's blocks",s:"Pre-commit subjects — zero decision friction",b:"b-anki",g:"g-anki",tag:"20 min"},
+{t:"9:30",l:"Wind-down",s:"Dim lights · no screens · music or book",b:"b-sleep",g:"g-sleep",tag:"90 min"},
+{t:"11:00",l:"Sleep",s:"8.5 hrs → wake 7:30 AM",b:"b-sleep",g:"g-sleep",tag:"sleep"},
+]},
+{id:1,name:"Tuesday",type:"study",typeLabel:"Full study day",typeClass:"g-bio",
+subjs:["Chemistry","Physics","Biology","Papers"],
+slots:[
+{t:"7:30",l:"Wake + Anki",s:"Daily spaced rep — 20 min",b:"b-anki",g:"g-anki",tag:"anki"},
+{t:"8:20",l:"Block 1 — Chemistry",s:"Organic / physical chemistry · peak focus",b:"b-chem",g:"g-chem",tag:"90 min"},
+{t:"9:50",l:"Break",s:"Walk outside",b:"b-rest",g:"g-rest",tag:"20 min"},
+{t:"10:10",l:"Block 2 — Physics",s:"Mechanics · electricity · wave optics",b:"b-phys",g:"g-phys",tag:"90 min"},
+{t:"11:40",l:"Break",s:"Snack + stretch",b:"b-rest",g:"g-rest",tag:"20 min"},
+{t:"12:00",l:"Lunch",s:"Rest 60 min · no screen",b:"b-rest",g:"g-rest",tag:"60 min"},
+{t:"1:00",l:"Block 3 — Biology",s:"Cellular / molecular biology",b:"b-bio",g:"g-bio",tag:"90 min"},
+{t:"2:30",l:"Break",s:"Walk",b:"b-rest",g:"g-rest",tag:"20 min"},
+{t:"2:50",l:"Block 4 — Tute paper",s:"Any subject · timed · strict conditions",b:"b-pp",g:"g-pp",tag:"paper"},
+{t:"4:20",l:"Exercise",s:"40 min aerobic — BDNF boost · non-negotiable",b:"b-ex",g:"g-ex",tag:"exercise"},
+{t:"5:00",l:"Block 5 — Weak areas",s:"From yesterday's error log",b:"b-bio",g:"g-bio",tag:"90 min"},
+{t:"6:30",l:"Dinner",s:"Rest · relax",b:"b-rest",g:"g-rest",tag:"30 min"},
+{t:"7:00",l:"Block 6 — Consolidation + review",s:"Mark paper · add errors to Notion · Anki",b:"b-review",g:"g-review",tag:"90 min"},
+{t:"8:30",l:"Anki + plan Wednesday",s:"New cards from today · pre-commit blocks",b:"b-anki",g:"g-anki",tag:"30 min"},
+{t:"10:00",l:"Wind-down",s:"No screens",b:"b-sleep",g:"g-sleep",tag:"60 min"},
+{t:"11:00",l:"Sleep",s:"8.5 hrs",b:"b-sleep",g:"g-sleep",tag:"sleep"},
+]},
+{id:2,name:"Wednesday",type:"teach",typeLabel:"Teaching day",typeClass:"g-teach",
+subjs:["Physics","Biology","Chemistry"],
+slots:[
+{t:"7:30",l:"Wake + Anki",s:"Spaced rep cards",b:"b-anki",g:"g-anki",tag:"anki"},
+{t:"8:20",l:"Block 1 — Physics",s:"Waves · modern physics · nuclear",b:"b-phys",g:"g-phys",tag:"90 min"},
+{t:"9:50",l:"Break",s:"Walk outside",b:"b-rest",g:"g-rest",tag:"20 min"},
+{t:"10:10",l:"Block 2 — Biology",s:"Genetics · ecology · evolution",b:"b-bio",g:"g-bio",tag:"90 min"},
+{t:"11:40",l:"Break",s:"Snack + stretch",b:"b-rest",g:"g-rest",tag:"20 min"},
+{t:"12:00",l:"Lunch",s:"60 min rest",b:"b-rest",g:"g-rest",tag:"60 min"},
+{t:"1:00",l:"Block 3 — Chemistry",s:"Inorganic chemistry · reactions · periodic",b:"b-chem",g:"g-chem",tag:"90 min"},
+{t:"2:00",l:"TEACH — younger students",s:"Use A/L overlap topics where possible",b:"b-teach",g:"g-teach",tag:"5 hrs"},
+{t:"7:00",l:"Dinner + decompress",s:"30 min — no study yet",b:"b-rest",g:"g-rest",tag:"30 min"},
+{t:"7:30",l:"Night review — Physics + Bio",s:"Same-day review = 80% less forgetting",b:"b-review",g:"g-review",tag:"60 min"},
+{t:"8:30",l:"Anki + plan Thursday",s:"Pre-commit Thursday blocks tonight",b:"b-anki",g:"g-anki",tag:"20 min"},
+{t:"9:30",l:"Wind-down",s:"Dim lights · no screens",b:"b-sleep",g:"g-sleep",tag:"90 min"},
+{t:"11:00",l:"Sleep",s:"8.5 hrs → wake 7:30 AM",b:"b-sleep",g:"g-sleep",tag:"sleep"},
+]},
+{id:3,name:"Thursday",type:"study",typeLabel:"Full study day",typeClass:"g-chem",
+subjs:["Biology","Chemistry","Physics","Papers"],
+slots:[
+{t:"7:30",l:"Wake + Anki",s:"Spaced rep",b:"b-anki",g:"g-anki",tag:"anki"},
+{t:"8:20",l:"Block 1 — Biology",s:"Human physiology · plant biology",b:"b-bio",g:"g-bio",tag:"90 min"},
+{t:"9:50",l:"Break",s:"Walk",b:"b-rest",g:"g-rest",tag:"20 min"},
+{t:"10:10",l:"Block 2 — Chemistry",s:"Calculations · stoichiometry · equilibrium",b:"b-chem",g:"g-chem",tag:"90 min"},
+{t:"11:40",l:"Break",s:"Snack",b:"b-rest",g:"g-rest",tag:"20 min"},
+{t:"12:00",l:"Lunch",s:"60 min rest",b:"b-rest",g:"g-rest",tag:"60 min"},
+{t:"1:00",l:"Block 3 — Physics",s:"Numerical problem sets · mark all answers",b:"b-phys",g:"g-phys",tag:"90 min"},
+{t:"2:30",l:"Break",s:"Walk",b:"b-rest",g:"g-rest",tag:"20 min"},
+{t:"2:50",l:"Block 4 — Lesson-wise paper",s:"Biology lesson-wise · strict marking",b:"b-pp",g:"g-pp",tag:"paper"},
+{t:"4:20",l:"Exercise",s:"40 min aerobic",b:"b-ex",g:"g-ex",tag:"exercise"},
+{t:"5:00",l:"Block 5 — Chem weak areas",s:"Errors from Tuesday's paper · close gaps",b:"b-chem",g:"g-chem",tag:"90 min"},
+{t:"6:30",l:"Dinner",s:"Rest",b:"b-rest",g:"g-rest",tag:"30 min"},
+{t:"7:00",l:"Block 6 — Review + Anki",s:"Mark paper · update error log · new cards",b:"b-review",g:"g-review",tag:"90 min"},
+{t:"10:00",l:"Wind-down + sleep by 11",s:"8.5 hrs",b:"b-sleep",g:"g-sleep",tag:"sleep"},
+]},
+{id:4,name:"Friday",type:"study",typeLabel:"Full study day",typeClass:"g-phys",
+subjs:["Physics","Biology","Chemistry","Papers"],
+slots:[
+{t:"7:30",l:"Wake + Anki",s:"Spaced rep",b:"b-anki",g:"g-anki",tag:"anki"},
+{t:"8:20",l:"Block 1 — Physics",s:"Theory + derivations · peak morning",b:"b-phys",g:"g-phys",tag:"90 min"},
+{t:"9:50",l:"Break",s:"Walk",b:"b-rest",g:"g-rest",tag:"20 min"},
+{t:"10:10",l:"Block 2 — Biology",s:"Plant biology · reproduction · microbes",b:"b-bio",g:"g-bio",tag:"90 min"},
+{t:"11:40",l:"Break",s:"Snack",b:"b-rest",g:"g-rest",tag:"20 min"},
+{t:"12:00",l:"Lunch",s:"60 min rest",b:"b-rest",g:"g-rest",tag:"60 min"},
+{t:"1:00",l:"Block 3 — Chemistry",s:"Practical / lab concepts · calculations",b:"b-chem",g:"g-chem",tag:"90 min"},
+{t:"2:30",l:"Break",s:"Walk",b:"b-rest",g:"g-rest",tag:"20 min"},
+{t:"2:50",l:"Block 4 — Lesson-wise paper",s:"Chemistry lesson-wise · mark scheme focus",b:"b-pp",g:"g-pp",tag:"paper"},
+{t:"4:20",l:"Exercise",s:"40 min — BDNF · non-negotiable",b:"b-ex",g:"g-ex",tag:"exercise"},
+{t:"5:00",l:"Block 5 — Physics numericals",s:"Full problem sets · time each question",b:"b-phys",g:"g-phys",tag:"90 min"},
+{t:"6:30",l:"Dinner",s:"Rest",b:"b-rest",g:"g-rest",tag:"30 min"},
+{t:"7:00",l:"Block 6 — Week review",s:"What went wrong this week? Error log.",b:"b-review",g:"g-review",tag:"90 min"},
+{t:"10:00",l:"Wind-down + sleep",s:"8.5 hrs",b:"b-sleep",g:"g-sleep",tag:"sleep"},
+]},
+{id:5,name:"Saturday",type:"papers",typeLabel:"Paper battle day",typeClass:"g-pp",
+subjs:["Chemistry (paper)","Physics (paper)","Biology (gaps)","Papers x2"],
+slots:[
+{t:"7:30",l:"Wake + Anki",s:"Spaced rep review — 20 min",b:"b-anki",g:"g-anki",tag:"anki"},
+{t:"8:20",l:"Block 1 — Biology review",s:"Summary charts · diagrams · definitions",b:"b-bio",g:"g-bio",tag:"90 min"},
+{t:"9:50",l:"Break",s:"Walk",b:"b-rest",g:"g-rest",tag:"20 min"},
+{t:"10:10",l:"PAPER — Chemistry (timed)",s:"Exam conditions · no interruptions · log to arena",b:"b-pp",g:"g-pp",tag:"battle"},
+{t:"11:40",l:"Mark scheme review",s:"Every wrong answer → error log now",b:"b-review",g:"g-review",tag:"review"},
+{t:"12:00",l:"Lunch",s:"60 min rest",b:"b-rest",g:"g-rest",tag:"60 min"},
+{t:"1:00",l:"PAPER — Physics (timed)",s:"Exam conditions · strict · log to arena",b:"b-pp",g:"g-pp",tag:"battle"},
+{t:"2:30",l:"Mark scheme review",s:"Error log update · Notion",b:"b-review",g:"g-review",tag:"review"},
+{t:"3:00",l:"Break",s:"Walk · decompress",b:"b-rest",g:"g-rest",tag:"30 min"},
+{t:"3:30",l:"Block — Biology gaps",s:"Close weak spots from error log",b:"b-bio",g:"g-bio",tag:"90 min"},
+{t:"5:00",l:"Exercise",s:"40 min · you earned it",b:"b-ex",g:"g-ex",tag:"exercise"},
+{t:"5:45",l:"Anki + error log update",s:"Consolidate the week's learning",b:"b-anki",g:"g-anki",tag:"30 min"},
+{t:"10:00",l:"Wind-down + sleep",s:"8.5 hrs",b:"b-sleep",g:"g-sleep",tag:"sleep"},
+]},
+{id:6,name:"Sunday",type:"review",typeLabel:"Review + plan day",typeClass:"g-review",
+subjs:["Biology (paper)","Review","Weekly plan"],
+slots:[
+{t:"7:30",l:"Wake + light Anki",s:"Review cards only — no new",b:"b-anki",g:"g-anki",tag:"anki"},
+{t:"8:20",l:"PAPER — Biology (timed)",s:"Exam conditions · log to arena",b:"b-pp",g:"g-pp",tag:"battle"},
+{t:"9:50",l:"Mark + error log",s:"Every wrong answer → Notion",b:"b-review",g:"g-review",tag:"review"},
+{t:"10:30",l:"Free time",s:"Genuinely free — no guilt",b:"b-rest",g:"g-rest",tag:"break"},
+{t:"11:00",l:"Block — Chemistry consolidation",s:"Summary sheets only · not new content",b:"b-chem",g:"g-chem",tag:"90 min"},
+{t:"12:30",l:"Long lunch + rest",s:"Recharge · social · family",b:"b-rest",g:"g-rest",tag:"90 min"},
+{t:"2:00",l:"Block — Physics review",s:"Weak derivations + formula drill",b:"b-phys",g:"g-phys",tag:"90 min"},
+{t:"3:30",l:"Free time",s:"You need recovery — protect it",b:"b-rest",g:"g-rest",tag:"break"},
+{t:"5:00",l:"Weekly planning session",s:"Set next week: subjects per block · paper targets",b:"b-review",g:"g-review",tag:"plan"},
+{t:"5:30",l:"Exercise",s:"40 min",b:"b-ex",g:"g-ex",tag:"exercise"},
+{t:"6:30",l:"Dinner + switch off",s:"Full disconnect — you did the work",b:"b-rest",g:"g-rest",tag:"rest"},
+{t:"9:00",l:"Anki + sleep prep",s:"Tomorrow is Monday — full war mode",b:"b-anki",g:"g-anki",tag:"anki"},
+{t:"11:00",l:"Sleep",s:"8.5 hrs",b:"b-sleep",g:"g-sleep",tag:"sleep"},
+]},
+];
+
+const RANKS=[
+{name:"Rookie",icon:"🥚",min:0},{name:"Contender",icon:"⚡",min:100},
+{name:"Achiever",icon:"🔥",min:250},{name:"Scholar",icon:"📚",min:500},
+{name:"Elite",icon:"🏆",min:800},{name:"Island Rank",icon:"👑",min:1200},
+];
+
+const BADGES=[
+{id:"b1",icon:"⚔️",name:"First blood",cond:"Log 1 paper",check:s=>s.papers>=1},
+{id:"b2",icon:"🔟",name:"Double digits",cond:"10 papers done",check:s=>s.papers>=10},
+{id:"b3",icon:"💪",name:"Grinder",cond:"20 papers done",check:s=>s.papers>=20},
+{id:"b4",icon:"🤖",name:"Machine",cond:"50 papers done",check:s=>s.papers>=50},
+{id:"b5",icon:"⭐",name:"S-rank hit",cond:"Score 90%+ once",check:s=>s.topScore>=90},
+{id:"b6",icon:"💯",name:"Perfect",cond:"Score 100%",check:s=>s.topScore>=100},
+{id:"b7",icon:"🔗",name:"Week warrior",cond:"7-day streak",check:s=>s.streak>=7},
+{id:"b8",icon:"🛡️",name:"Fortnight force",cond:"14-day streak",check:s=>s.streak>=14},
+{id:"b9",icon:"🌊",name:"Unstoppable",cond:"30-day streak",check:s=>s.streak>=30},
+{id:"b10",icon:"🔺",name:"All-rounder",cond:"Papers in all 3 subjects",check:s=>s.subjects>=3},
+{id:"b11",icon:"📈",name:"On the rise",cond:"Avg score above 75%",check:s=>s.avg>=75},
+{id:"b12",icon:"👑",name:"Island bound",cond:"Reach 1200 XP",check:s=>s.xp>=1200},
+];
+
+let cur=0,papers=[],streakArr=[],xp=0;
+
+function sw(e,id){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+  e.target.classList.add('active');
+  document.getElementById('tab-'+id).classList.add('active');
+  if(id==='streak'){buildStreak();buildBadges();}
+  if(id==='laws'){buildLadder();}
+}
+
+function buildDots(){
+  document.getElementById('day-dots').innerHTML=DAYS.map((d,i)=>`<div class="day-dot${i===cur?' active':''}${d.type==='teach'?' teach-dot':''}" onclick="goDay(${i})">${d.name.slice(0,2)}</div>`).join('');
+}
+
+function buildDay(){
+  const d=DAYS[cur];
+  const sc={Biology:"g-bio",Chemistry:"g-chem",Physics:"g-phys","Papers x2":"g-pp","Chemistry (paper)":"g-pp","Physics (paper)":"g-pp","Biology (paper)":"g-pp","Biology (gaps)":"g-bio","Review":"g-review","Weekly plan":"g-review"};
+  let h=`<div class="day-header"><div class="day-name">${d.name}</div><div class="day-badge ${d.typeClass}">${d.typeLabel}</div></div>`;
+  h+=`<div class="subj-pills">${d.subjs.map(s=>`<span class="spill ${sc[s]||'g-rest'}">${s}</span>`).join('')}</div>`;
+  h+=`<div class="timeline">`;
+  d.slots.forEach(sl=>{h+=`<div class="trow"><div class="ttime">${sl.t}</div><div class="tblock ${sl.b}"><div class="tinfo"><div class="tlabel">${sl.l}</div><div class="tsub">${sl.s}</div></div><span class="ttag ${sl.g}">${sl.tag}</span></div></div>`;});
+  h+=`</div>`;
+  document.getElementById('day-content').innerHTML=h;
+  buildDots();
+}
+
+function goDay(i){cur=i;buildDay();}
+function prevDay(){cur=(cur-1+7)%7;buildDay();}
+function nextDay(){cur=(cur+1)%7;buildDay();}
+
+function getStats(){
+  const ps=papers.length,scores=papers.map(p=>p.score);
+  const avg=ps>0?Math.round(scores.reduce((a,b)=>a+b,0)/ps):0;
+  const top=ps>0?Math.max(...scores):0;
+  const subjs=new Set(papers.map(p=>p.subj)).size;
+  return{papers:ps,avg,topScore:top,xp,subjects:subjs,streak:calcStreak()};
+}
+
+function calcStreak(){
+  if(!streakArr.length)return 0;
+  const sorted=[...streakArr].sort();
+  const today=new Date();today.setHours(0,0,0,0);
+  let s=0,d=new Date(today);
+  while(true){const ds=d.toISOString().split('T')[0];if(sorted.includes(ds)){s++;d.setDate(d.getDate()-1);}else break;}
+  return s;
+}
+
+function getRank(){return RANKS.slice().reverse().find(r=>xp>=r.min)||RANKS[0];}
+
+function updateUI(){
+  const r=getRank();
+  const ri=RANKS.indexOf(r);
+  const nr=RANKS[ri+1]||r;
+  document.getElementById('rank-icon').textContent=r.icon;
+  document.getElementById('rank-name').textContent=r.name;
+  document.getElementById('rank-next').textContent=nr===r?'Max rank reached!':`${nr.min-xp} XP to ${nr.name}`;
+  document.getElementById('xp-big').textContent=xp+' XP';
+  const pct=nr===r?100:Math.min(100,Math.round((xp-r.min)/(nr.min-r.min)*100));
+  document.getElementById('xp-bar').style.width=pct+'%';
+  document.getElementById('xp-pct-txt').textContent=pct+'%';
+  document.getElementById('s-papers').textContent=papers.length;
+  const st=getStats();
+  document.getElementById('s-avg').textContent=st.papers>0?st.avg+'%':'—';
+  document.getElementById('s-best').textContent=st.topScore>0?st.topScore+'%':'—';
+  document.getElementById('s-streak').textContent=st.streak;
+  ['bio','chem','phys'].forEach(k=>{
+    const subj={bio:'Biology',chem:'Chemistry',phys:'Physics'}[k];
+    const pp=papers.filter(p=>p.subj===subj);
+    const avg=pp.length?Math.round(pp.reduce((a,b)=>a+b.score,0)/pp.length):0;
+    document.getElementById('bar-'+k).style.width=avg+'%';
+    document.getElementById('pct-'+k).textContent=pp.length?avg+'%':'—';
+  });
+  renderPapers();
+}
+
+function logIt(){
+  const subj=document.getElementById('f-subj').value;
+  const year=document.getElementById('f-year').value;
+  const sel=document.getElementById('f-type');
+  const base=parseInt(sel.value);
+  const type=sel.options[sel.selectedIndex].text;
+  const sc=document.getElementById('f-score').value;
+  if(!sc||isNaN(sc)){document.getElementById('f-score').focus();return;}
+  const score=Math.min(100,Math.max(0,parseInt(sc)));
+  let bonus=0;
+  if(score===100)bonus=50;else if(score>=90)bonus=30;else if(score>=80)bonus=15;else if(score>=70)bonus=5;
+  const gained=base+bonus;
+  xp+=gained;
+  papers.unshift({subj,year,type,score,gained,date:new Date().toLocaleDateString('en-GB')});
+  document.getElementById('f-score').value='';
+  updateUI();
+}
+
+function rankCls(s){if(s>=90)return'rs';if(s>=80)return'ra';if(s>=70)return'rb';return'rc';}
+function rankLbl(s){if(s>=90)return'S';if(s>=80)return'A';if(s>=70)return'B';return'C';}
+
+function renderPapers(){
+  if(!papers.length){document.getElementById('paper-list').innerHTML='<div style="font-size:12px;color:var(--color-text-tertiary);padding:6px 0">No papers yet. Get to work.</div>';return;}
+  document.getElementById('paper-list').innerHTML=papers.slice(0,20).map(p=>`<div class="paper-row"><div class="pr-subj">${p.subj}</div><div class="pr-info">${p.year} · ${p.type} · ${p.date}</div><div class="pr-xp">+${p.gained}XP</div><span class="pr-rank ${rankCls(p.score)}">${p.score}% ${rankLbl(p.score)}</span></div>`).join('');
+}
+
+function buildStreak(){
+  const today=new Date();today.setHours(0,0,0,0);
+  let h='';
+  for(let i=29;i>=0;i--){
+    const d=new Date(today);d.setDate(d.getDate()-i);
+    const ds=d.toISOString().split('T')[0];
+    const on=streakArr.includes(ds);
+    const isToday=i===0;
+    const miss=i>0&&i<20&&!on;
+    h+=`<div class="sd${on?' on':''}${isToday?' today-ring':''}${miss?' miss':''}" onclick="toggleDay('${ds}')" title="${ds}">${d.getDate()}</div>`;
+  }
+  document.getElementById('streak-grid').innerHTML=h;
+  document.getElementById('s-streak').textContent=calcStreak();
+}
+
+function toggleDay(ds){const i=streakArr.indexOf(ds);if(i>=0)streakArr.splice(i,1);else streakArr.push(ds);buildStreak();buildBadges();}
+function markToday(){const t=new Date();t.setHours(0,0,0,0);const ds=t.toISOString().split('T')[0];if(!streakArr.includes(ds))streakArr.push(ds);buildStreak();buildBadges();}
+function clrStreak(){streakArr=[];buildStreak();buildBadges();}
+
+function buildBadges(){
+  const st=getStats();
+  document.getElementById('badges-grid').innerHTML=BADGES.map(b=>{const e=b.check(st);return`<div class="badge-card${e?' earned':''}"><div class="badge-ico">${b.icon}</div><div class="badge-nm">${b.name}</div><div class="badge-cn">${b.cond}</div></div>`;}).join('');
+}
+
+function buildLadder(){
+  const r=getRank();
+  document.getElementById('rank-ladder').innerHTML=RANKS.map(rk=>`<div class="rung${rk===r?' current':''}"><div class="rung-ico">${rk.icon}</div><div class="rung-name">${rk.name}</div><div class="rung-xp">${rk.min} XP</div>${rk===r?'<span class="rung-cur">You are here</span>':''}</div>`).join('');
+}
+
+const ys=document.getElementById('f-year');
+for(let y=2025;y>=2000;y--){const o=document.createElement('option');o.value=y;o.textContent=y;ys.appendChild(o);}
+
+buildDay();updateUI();buildBadges();
+</script>
+</body>
+</html>
